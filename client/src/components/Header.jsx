@@ -10,23 +10,37 @@ import MenuIcon from '@material-ui/icons/Menu'
 import style from '../theme/Header'
 
 
-const Header = props => {
-    const { classes } = props
+const Header = ({
+    classes
+}) => {
+    const {root,menuButton,grow} = classes
     return (
-        <div className={classes.root}>
+        <div className={root}>
             <AppBar position="fixed">
                 <Toolbar>
-                    <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+                    <IconButton className={menuButton}
+                                color="inherit"
+                                aria-label="Menu">
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" color="inherit" className={classes.grow}>
+                    <Typography variant="h6"
+                                color="inherit"
+                                className={grow}>
                         News
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    <Button color="inherit">
+                        Login
+                    </Button>
                 </Toolbar>
             </AppBar>
         </div>
-    );
+    )
 }
+
+
+Header.propTypes = {
+    classes : PropTypes.object.isRequired
+}
+
 
 export default withStyles(style)(Header)
