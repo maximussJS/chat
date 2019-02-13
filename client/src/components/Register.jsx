@@ -15,10 +15,13 @@ const Register = ({
     fields,
     button,
     steps,
+    disabled,
     activeStep,
     actionsContainer,
+    onSubmit,
     handleBack,
     handleNext,
+    isDisabled,
     onNameChange,
     onLoginChange,
     onImageChange,
@@ -55,7 +58,9 @@ const Register = ({
                                 </Button>
                                 <Button variant="contained"
                                         color="primary"
-                                        onClick={() => handleNext()}
+                                        disabled={activeStep === steps.length - 1
+                                            ? false : disabled || fields.length !== 0 || isDisabled(activeStep)}
+                                        onClick={activeStep === steps.length - 1 ? () => onSubmit() : () => handleNext()}
                                         className={button}>
                                     {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                                 </Button>
@@ -72,9 +77,11 @@ Register.propTypes = {
     error : propTypes.string.isRequired,
     fields : propTypes.array.isRequired,
     steps : propTypes.number.isRequired,
+    disabled : propTypes.bool.isRequired,
     activeStep : propTypes.number.isRequired,
     handleBack : propTypes.func.isRequired,
     handleNext : propTypes.func.isRequired,
+    onSubmit : propTypes.func.isRequired,
     onNameChange : propTypes.func.isRequired,
     onLoginChange : propTypes.func.isRequired,
     onImageChange : propTypes.func.isRequired,

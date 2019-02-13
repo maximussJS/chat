@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {withRouter} from 'react-router-dom'
 import style from '../theme/Register'
 import RegisterForm from '../components/Register'
 import {withStyles} from '@material-ui/core/styles'
@@ -15,6 +16,7 @@ class Register extends Component {
             confirmPassword : '',
             image : '',
             activeStep : 0,
+            disabled : true,
             fields : [],
             error : ''
         }
@@ -24,59 +26,77 @@ class Register extends Component {
         this.setState({
             name : e.target.value,
             error : '',
+            disabled : false,
             fields : []
-        })
-        if(this.state.name.length < 8) this.setState({
-            error : 'Name length is too small',
-            fields : [...this.state.fields, 'name']
-        })
-        if(this.state.name.length > 20) this.setState({
-            error : 'Name length is too big',
-            fields : [...this.state.fields, 'name']
+        }, () => {
+            if(this.state.name.trim() === '') this.setState({
+                error : 'Invalid name',
+                fields : [...this.state.fields, 'name']
+            })
+            if(this.state.name.length < 8) this.setState({
+                error : 'Name length is too small',
+                fields : [...this.state.fields, 'name']
+            })
+            if(this.state.name.length > 20) this.setState({
+                error : 'Name length is too big',
+                fields : [...this.state.fields, 'name']
+            })
         })
     }
 
     onLoginChange = async e => {
-        try {
-            this.setState({
-                login : e.target.value,
-                error : '',
-                fields : []
-            })
-            if(this.state.login.length < 8) this.setState({
-                error : 'Login length is too small',
-                fields : [...this.state.fields, 'login']
-            })
-            if(this.state.login.length > 20) this.setState({
-                error : 'Login length is too big',
-                fields : [...this.state.fields, 'login']
-            })
-            const response = await isLoginUnique(this.state.login)
-            if(!response.success) this.setState({
-                error : 'This login is already exists',
-                fields : [...this.state.fields, 'login']
-            })
-        }
-        catch (e) {
-            this.setState({
-                error : e.message
-            })
-        }
+        this.setState({
+            login : e.target.value,
+            error : '',
+            disabled : false,
+            fields : []
+        }, async () => {
+            try {
+                if(this.state.login.trim() === '') this.setState({
+                    error : 'Invalid login',
+                    fields : [...this.state.fields, 'login']
+                })
+                if(this.state.login.length < 8) this.setState({
+                    error : 'Login length is too small',
+                    fields : [...this.state.fields, 'login']
+                })
+                if(this.state.login.length > 20) this.setState({
+                    error : 'Login length is too big',
+                    fields : [...this.state.fields, 'login']
+                })
+                const response = await isLoginUnique(this.state.login)
+                if(!response.success) this.setState({
+                    error : 'This login is already exists',
+                    fields : [...this.state.fields, 'login']
+                })
+            }
+            catch (e) {
+                this.setState({
+                    error : e.message
+                })
+            }
+        })
     }
 
     onPasswordChange = e => {
         this.setState({
             password : e.target.value,
             error : '',
+            disabled : false,
             fields : []
-        })
-        if(this.state.password.length < 8) this.setState({
-            error : 'Password length is too small',
-            fields : [...this.state.fields, 'password']
-        })
-        if(this.state.password.length > 20) this.setState({
-            error : 'Password length is too big',
-            fields : [...this.state.fields, 'password']
+        }, () => {
+            if(this.state.password.trim() === '') this.setState({
+                error : 'Invalid password',
+                fields : [...this.state.fields, 'password']
+            })
+            if(this.state.password.length < 8) this.setState({
+                error : 'Password length is too small',
+                fields : [...this.state.fields, 'password']
+            })
+            if(this.state.password.length > 20) this.setState({
+                error : 'Password length is too big',
+                fields : [...this.state.fields, 'password']
+            })
         })
     }
 
@@ -84,25 +104,51 @@ class Register extends Component {
         this.setState({
             confirmPassword : e.target.value,
             error : '',
+            disabled : false,
             fields : []
-        })
-        if(this.state.confirmPassword !== this.state.password) this.setState({
-            error : 'Password didn`t match',
-            fields : [...this.state.fields, 'repeat']
+        }, () => {
+            if(this.state.confirmPassword.trim() === '') this.setState({
+                error : 'Invalid password repeating',
+                fields : [...this.state.fields, 'repeat']
+            })
+            if(this.state.confirmPassword !== this.state.password) this.setState({
+                error : 'Password didn`t match',
+                fields : [...this.state.fields, 'repeat']
+            })
         })
     }
 
-    onImageChange = e => this.setState({
-        image : e.target.files[0]
+    onImageChange = e => e.target.files[0] === undefined ? this.setState({
+        error : 'No such file',
+        fields : [...this.state.fields, 'image']
+    }) : this.setState({
+        image : e.target.files[0],
+        disabled : false
     })
 
     handleNext = () => this.setState(state => ({
-        activeStep: state.activeStep + 1
+        activeStep: state.activeStep + 1,
+        disabled : state.activeStep + 1 !== this.getSteps() - 1
     }))
 
     handleBack = () => this.setState(state => ({
-        activeStep: state.activeStep - 1
+        activeStep: state.activeStep - 1,
+        disabled : true
     }))
+
+    isDisabled = step => {
+        switch (step) {
+            case (0) : {
+                const {name, login} = this.state
+                return (name === '' || login === '')
+            }
+            case (1) : {
+                const {password, confirmPassword} = this.state
+                return password === '' || confirmPassword === ''
+            }
+            default : return false
+        }
+    }
 
     getSteps = () => ['Input your name and login', 'Input password', 'Choose image', 'Congratulations']
 
@@ -125,17 +171,20 @@ class Register extends Component {
 
     render() {
         const {root,actionsContainer,button} = this.props.classes
-        const {activeStep,error,fields} = this.state
+        const {activeStep,error,fields,disabled} = this.state
         return (
             <RegisterForm root={root}
                           error={error}
                           fields={fields}
                           button={button}
+                          disabled={disabled}
                           activeStep={activeStep}
                           actionsContainer={actionsContainer}
                           steps={this.getSteps()}
+                          onSubmit={this.onSubmit}
                           handleBack={this.handleBack}
                           handleNext={this.handleNext}
+                          isDisabled={this.isDisabled}
                           onNameChange={this.onNameChange}
                           onLoginChange={this.onLoginChange}
                           onImageChange={this.onImageChange}
@@ -146,4 +195,4 @@ class Register extends Component {
 }
 
 
-export default withStyles(style)(Register)
+export default withRouter(withStyles(style)(Register))
