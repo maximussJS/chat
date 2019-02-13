@@ -19,38 +19,47 @@ const RegisterContent = ({
         case 0:
             return (
                 <Grid container direction='column'>
-                        <Grid container md={6}>
-                            <Input label='Input name'
-                                   onChange={onNameChange}/>
-                        </Grid>
-                        <Grid container md={6}>
-                            <Input label='Input login'
-                                   onChange={onLoginChange}/>
-                        </Grid>
+                    <Grid container md={6}>
+                        <Input label='Input name'
+                               onChange={onNameChange}/>
                     </Grid>
+                    <Grid container md={6}>
+                        <Input label='Input login'
+                               onChange={onLoginChange}/>
+                    </Grid>
+                    {error && <span> {error} </span> }
+                </Grid>
             )
         case 1:
             return (
-                <div>
-                    <Grid container direction='column'>
-                        <Grid container md={6}>
-                            <InputPassword label='Input password'
-                                           onChange={onNameChange}/>
-                        </Grid>
-                        <Grid container md={6}>
-                            <InputPassword label='Repeat password'
-                                           onChange={onLoginChange}/>
-                        </Grid>
+                <Grid container direction='column'>
+                    <Grid container md={6}>
+                        <InputPassword label='Input password'
+                                       onChange={onPasswordChange}/>
                     </Grid>
-                </div>
+                    <Grid container md={6}>
+                        <InputPassword label='Repeat password'
+                                       onChange={onConfirmPasswordChange}/>
+                    </Grid>
+                    {error && <span> {error} </span> }
+                </Grid>
             )
         case 2:
-            return `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`;
+            return (
+                <div>
+                    <Input type={'file'}
+                           onChange={onImageChange}
+                           label={'Choose image'}/>
+                    {error && <span> {error} </span>}
+                </div>
+            )
         default:
-            return 'Unknown step';
+            return(
+                <div>
+                    <h4>Press Finish to end Registration</h4>
+                    <h4>OR Press BACK if you didn`t agree with your settings</h4>
+                </div>
+            )
     }
 }
 

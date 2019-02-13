@@ -6,7 +6,6 @@ import StepLabel from '@material-ui/core/StepLabel'
 import StepContent from '@material-ui/core/StepContent'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import Grid from '@material-ui/core/Grid'
 import Content from '../components/RegisterContent'
 
 
@@ -82,5 +81,6 @@ Register.propTypes = {
     onPasswordChange : propTypes.func.isRequired,
     onConfirmPasswordChange : propTypes.func.isRequired
 }
+
 
 export default Register

@@ -25,7 +25,7 @@ class InputPassword extends Component {
     render() {
         const {value,onChange,label,fullWidth = true, helper = false, helperText, margin = 'normal',
                error = ''} = this.props
-        const { showPassword } = this.state
+        const {showPassword} = this.state
         return (
             <FormControl fullWidth={fullWidth} margin={margin}>
                 <InputLabel error={error}>{label}</InputLabel>
@@ -48,9 +48,8 @@ class InputPassword extends Component {
             </FormControl>
         )
     }
-
-
 }
+
 
 InputPassword.propTypes = {
     value: PropTypes.string,
@@ -62,5 +61,6 @@ InputPassword.propTypes = {
     margin: PropTypes.string,
     error: PropTypes.bool,
 }
+
 
 export default InputPassword
