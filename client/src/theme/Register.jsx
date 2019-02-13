@@ -3,17 +3,14 @@ const style = theme => ({
         width: '90%',
     },
     button: {
-        marginRight: theme.spacing.unit,
-    },
-    backButton: {
-        marginRight: theme.spacing.unit,
-    },
-    completed: {
-        display: 'inline-block',
-    },
-    instructions: {
         marginTop: theme.spacing.unit,
-        marginBottom: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+    },
+    actionsContainer: {
+        marginBottom: theme.spacing.unit * 2,
+    },
+    resetContainer: {
+        padding: theme.spacing.unit * 3,
     },
 })
 

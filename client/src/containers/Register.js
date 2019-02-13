@@ -1,140 +1,75 @@
-import React,{Component} from 'react'
-import { withStyles } from '@material-ui/core/styles'
-import RegisterForm from '../components/Register'
+import React, {Component} from 'react'
 import style from '../theme/Register'
+import RegisterForm from '../components/Register'
+import {withStyles} from '@material-ui/core/styles'
 
-const getSteps = ()  => ['Select campaign settings', 'Create an ad group', 'Create an ad']
-
-function getStepContent(step) {
-    switch (step) {
-        case 0:
-            return 'Step 1: Select campaign settings...';
-        case 1:
-            return 'Step 2: What is an ad group anyways?';
-        case 2:
-            return 'Step 3: This is the bit I really care about!';
-        default:
-            return 'Unknown step';
-    }
-}
 
 class Register extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            activeStep: 0,
-            completed: {},
-            skipped: {},
+            name : '',
+            login : '',
+            password : '',
+            confirmPassword : '',
+            image : '',
+            activeStep : 0,
+            fields : [],
+            error : ''
         }
     }
 
-    totalSteps = () => getSteps().length;
+    onNameChange = e => this.setState({
+        name : e.target.value
+    })
 
-    isStepOptional = step => step === 1;
+    onLoginChange = e => this.setState({
+        login : e.target.value
+    })
 
-    handleSkip = () => {
-        const { activeStep } = this.state;
-        if (!this.isStepOptional(activeStep)) throw new Error("You can't skip a step that isn't optional.")
-        this.setState(state => {
-            const skipped = new Set(state.skipped.values());
-            skipped.add(activeStep);
-            return {
-                activeStep: state.activeStep + 1,
-                skipped,
-            }
-        })
-    }
+    onPasswordChange = e => this.setState({
+        password : e.target.value
+    })
 
-    handleNext = () => {
-        let activeStep;
-        if (this.isLastStep() && !this.allStepsCompleted()) {
-            const steps = getSteps();
-            activeStep = steps.findIndex((step, i) => !this.state.completed.has(i));
-        }
-        else activeStep = this.state.activeStep + 1;
-        this.setState({
-            activeStep : activeStep
-        })
-    }
+    onConfirmPasswordChange = e => this.setState({
+        confirmPassword : e.target.value
+    })
 
-    handleBack = () => {
-        this.setState(state => ({
-            activeStep: state.activeStep - 1,
-        }))
-    }
+    onImageChange = e => this.setState({
+        image : e.target.files[0]
+    })
 
-    handleStep = step => () => {
-        this.setState({
-            activeStep: step,
-        })
-    }
+    handleNext = () => this.setState(state => ({
+        activeStep: state.activeStep + 1
+    }))
 
-    handleComplete = () => {
-        // eslint-disable-next-line react/no-access-state-in-setstate
-        const completed = new Set(this.state.completed);
-        completed.add(this.state.activeStep);
-        this.setState({
-            completed,
-        })
-        if (completed.size !== this.totalSteps() - this.skippedSteps()) {
-            this.handleNext();
-        }
-    }
+    handleBack = () => this.setState(state => ({
+        activeStep: state.activeStep - 1
+    }))
 
-    handleReset = () => {
-        this.setState({
-            activeStep: 0,
-            completed: new Set(),
-            skipped: new Set(),
-        })
-    }
-
-    skippedSteps() {
-        return this.state.skipped.size;
-    }
-
-    isStepSkipped(step) {
-        return this.state.skipped.has(step);
-    }
-
-    isStepComplete(step) {
-        return this.state.completed.has(step);
-    }
-
-    completedSteps() {
-        return this.state.completed.size;
-    }
-
-    allStepsCompleted() {
-        return this.completedSteps() === this.totalSteps() - this.skippedSteps();
-    }
-
-    isLastStep() {
-        return this.state.activeStep === this.totalSteps() - 1;
-    }
+    getSteps = () => ['Input your name and login', 'Input password', 'Choose image']
 
     render() {
-        const { classes } = this.props;
-        const steps = getSteps()
+        const {root,actionsContainer,button} = this.props.classes
+        const {activeStep,error,fields} = this.state
         return (
-            <RegisterForm classes={classes}
-                          activeStep={this.state.activeStep}
-                          completed={this.state.completed}
-                          steps={steps}
-                          handleStep={this.handleStep}
-                          handleSkip={this.handleSkip}
+            <RegisterForm root={root}
+                          error={error}
+                          fields={fields}
+                          button={button}
+                          activeStep={activeStep}
+                          actionsContainer={actionsContainer}
+                          steps={this.getSteps()}
                           handleBack={this.handleBack}
                           handleNext={this.handleNext}
-                          handleReset={this.handleReset}
-                          totalSteps={this.totalSteps}
-                          isStepComplete={this.isStepComplete}
-                          completedSteps={this.completedSteps}
-                          allStepsCompleted={this.allStepsCompleted}
-                          isStepOptional={this.isStepOptional}
-                          isStepSkipped={this.isStepSkipped}
-                          getStepContent={getStepContent()}/>
+                          onNameChange={this.onNameChange}
+                          onLoginChange={this.onLoginChange}
+                          onImageChange={this.onImageChange}
+                          onPasswordChange={this.onPasswordChange}
+                          onConfirmPasswordChange={this.onConfirmPasswordChange}/>
         )
     }
 }
+
 
 export default withStyles(style)(Register)
