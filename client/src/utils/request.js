@@ -12,7 +12,7 @@ export const request = (method,path,data) => new Promise((resolve,reject) => {
         method: method,
         headers: headers,
     }
-    fetch(`http://localhost:3001${path}`, options)
+    fetch(`http://localhost:3001/api${path}`, options)
         .then(response => response.json().then(json => resolve(json)))
         .catch(e => reject(e))
 })
@@ -28,7 +28,7 @@ export const requestFile = (method,path,file) => new Promise((resolve,reject) =>
         body : formData,
         headers: headers
     }
-    fetch(`http://localhost:3001${path}`, options)
+    fetch(`http://localhost:3001/api${path}`, options)
         .then(response => response.json().then(json => resolve(json)))
         .catch(e => reject(e))
 })
