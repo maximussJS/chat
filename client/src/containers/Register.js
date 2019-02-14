@@ -71,9 +71,7 @@ class Register extends Component {
                 })
             }
             catch (e) {
-                this.setState({
-                    error : e.message
-                })
+                this.props.history.push('/error')
             }
         })
     }
@@ -112,7 +110,7 @@ class Register extends Component {
                 fields : [...this.state.fields, 'repeat']
             })
             if(this.state.confirmPassword !== this.state.password) this.setState({
-                error : 'Password didn`t match',
+                error : 'Password did n`t match',
                 fields : [...this.state.fields, 'repeat']
             })
         })
@@ -163,9 +161,7 @@ class Register extends Component {
             this.props.history.push(response.success ? '/login' : '/error')
         }
         catch (e) {
-            this.setState({
-                error : e.message
-            })
+            this.props.history.push('/error')
         }
     }
 

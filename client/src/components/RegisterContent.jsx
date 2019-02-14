@@ -21,13 +21,18 @@ const RegisterContent = ({
                 <Grid container direction='column'>
                     <Grid container md={6}>
                         <Input label='Input name'
-                               onChange={onNameChange}/>
+                               onChange={onNameChange}
+                               error={error && fields[0] === 'name'}
+                               helper={error && fields[0] === 'name'}
+                               helperText={error}/>
                     </Grid>
                     <Grid container md={6}>
                         <Input label='Input login'
-                               onChange={onLoginChange}/>
+                               onChange={onLoginChange}
+                               error={error && fields[0] === 'login'}
+                               helper={error && fields[0] === 'login'}
+                               helperText={error}/>
                     </Grid>
-                    {error && <span> {error} </span> }
                 </Grid>
             )
         case 1:
@@ -35,13 +40,18 @@ const RegisterContent = ({
                 <Grid container direction='column'>
                     <Grid container md={6}>
                         <InputPassword label='Input password'
-                                       onChange={onPasswordChange}/>
+                                       onChange={onPasswordChange}
+                                       error={error && fields[0] === 'password'}
+                                       helper={error && fields[0] === 'password'}
+                                       helperText={error}/>
                     </Grid>
                     <Grid container md={6}>
                         <InputPassword label='Repeat password'
-                                       onChange={onConfirmPasswordChange}/>
+                                       onChange={onConfirmPasswordChange}
+                                       error={error && fields[0] === 'repeat'}
+                                       helper={error && fields[0] === 'repeat'}
+                                       helperText={error}/>
                     </Grid>
-                    {error && <span> {error} </span> }
                 </Grid>
             )
         case 2:
@@ -49,8 +59,10 @@ const RegisterContent = ({
                 <div>
                     <Input type={'file'}
                            onChange={onImageChange}
-                           label={'Choose image'}/>
-                    {error && <span> {error} </span>}
+                           label={'Choose image'}
+                           error={error && fields[0] === 'image'}
+                           helper={error && fields[0] === 'image'}
+                           helperText={error}/>
                 </div>
             )
         default:

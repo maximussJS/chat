@@ -27,8 +27,11 @@ class InputPassword extends Component {
                error = ''} = this.props
         const {showPassword} = this.state
         return (
-            <FormControl fullWidth={fullWidth} margin={margin}>
-                <InputLabel error={error}>{label}</InputLabel>
+            <FormControl fullWidth={fullWidth}
+                         margin={margin}>
+                <InputLabel error={error}>
+                    {label}
+                </InputLabel>
                 <Input type={showPassword ? 'text' : 'password'}
                        value={value}
                        onChange={onChange}
@@ -39,7 +42,7 @@ class InputPassword extends Component {
                                         className={error ? 'error' : null}
                                         onClick={this.showPasswordChange}
                                         color={'primary'}>
-                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                                {showPassword ? <Visibility/> : <VisibilityOff/>}
                             </IconButton>
                         </InputAdornment>
                     }
