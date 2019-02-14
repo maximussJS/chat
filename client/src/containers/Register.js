@@ -29,15 +29,11 @@ class Register extends Component {
             disabled : false,
             fields : []
         }, () => {
-            if(this.state.name.trim() === '') this.setState({
-                error : 'Invalid name',
-                fields : [...this.state.fields, 'name']
-            })
-            if(this.state.name.length < 8) this.setState({
+            if(this.state.name.trim().length < 8) this.setState({
                 error : 'Name length is too small',
                 fields : [...this.state.fields, 'name']
             })
-            if(this.state.name.length > 20) this.setState({
+            if(this.state.name.trim().length > 20) this.setState({
                 error : 'Name length is too big',
                 fields : [...this.state.fields, 'name']
             })
@@ -52,23 +48,21 @@ class Register extends Component {
             fields : []
         }, async () => {
             try {
-                if(this.state.login.trim() === '') this.setState({
-                    error : 'Invalid login',
-                    fields : [...this.state.fields, 'login']
-                })
-                if(this.state.login.length < 8) this.setState({
+                if(this.state.login.trim().length < 8) this.setState({
                     error : 'Login length is too small',
                     fields : [...this.state.fields, 'login']
                 })
-                if(this.state.login.length > 20) this.setState({
+                if(this.state.login.trim().length > 20) this.setState({
                     error : 'Login length is too big',
                     fields : [...this.state.fields, 'login']
                 })
-                const response = await isLoginUnique(this.state.login)
-                if(!response.success) this.setState({
-                    error : 'This login is already exists',
-                    fields : [...this.state.fields, 'login']
-                })
+                if(this.state.error === '') {
+                    const response = await isLoginUnique(this.state.login)
+                    if(!response.success) this.setState({
+                        error : 'This login is already exists',
+                        fields : [...this.state.fields, 'login']
+                    })
+                }
             }
             catch (e) {
                 this.props.history.push('/error')
@@ -83,15 +77,11 @@ class Register extends Component {
             disabled : false,
             fields : []
         }, () => {
-            if(this.state.password.trim() === '') this.setState({
-                error : 'Invalid password',
-                fields : [...this.state.fields, 'password']
-            })
-            if(this.state.password.length < 8) this.setState({
+            if(this.state.password.trim().length < 8) this.setState({
                 error : 'Password length is too small',
                 fields : [...this.state.fields, 'password']
             })
-            if(this.state.password.length > 20) this.setState({
+            if(this.state.password.trim().length > 20) this.setState({
                 error : 'Password length is too big',
                 fields : [...this.state.fields, 'password']
             })
@@ -105,24 +95,22 @@ class Register extends Component {
             disabled : false,
             fields : []
         }, () => {
-            if(this.state.confirmPassword.trim() === '') this.setState({
-                error : 'Invalid password repeating',
-                fields : [...this.state.fields, 'repeat']
-            })
             if(this.state.confirmPassword !== this.state.password) this.setState({
-                error : 'Password did n`t match',
+                error : 'Passwords did not match',
                 fields : [...this.state.fields, 'repeat']
             })
         })
     }
 
-    onImageChange = e => e.target.files[0] === undefined ? this.setState({
-        error : 'No such file',
-        fields : [...this.state.fields, 'image']
-    }) : this.setState({
-        image : e.target.files[0],
-        disabled : false
-    })
+    onImageChange = e => {
+        e.target.files[0] === undefined ? this.setState({
+            error : 'No such file',
+            fields : [...this.state.fields, 'image']
+        }) : this.setState({
+            image : e.target.files[0],
+            disabled : false
+        })
+    }
 
     handleNext = () => this.setState(state => ({
         activeStep: state.activeStep + 1,
@@ -152,11 +140,14 @@ class Register extends Component {
 
     onSubmit = async () => {
         try {
-            const {name,login,password} = this.state
+            const {name,login,password,image} = this.state
+            alert(JSON.stringify(this.state))
             const response = await register({
                 name : name,
                 login : login,
-                password : password
+                password : password,
+            },{
+                image : image
             })
             this.props.history.push(response.success ? '/login' : '/error')
         }

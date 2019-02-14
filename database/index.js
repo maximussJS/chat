@@ -31,7 +31,7 @@ const createTables = () => {
         login VARCHAR(128) UNIQUE NOT NULL,
         password VARCHAR(256) NOT NULL,
         image VARCHAR(256) NOT NULL,
-        created TIMESTAMP );`
+        created TIMESTAMP);`
     pool.query(text)
         .then(res => {
             console.log(res)
@@ -42,6 +42,7 @@ const createTables = () => {
             pool.end()
         })
 }
+
 
 const dropTable = tableName => {
     const text = 'DROP TABLE IF EXISTS users'
@@ -58,10 +59,6 @@ const dropTable = tableName => {
 
 
 module.exports = {
-    query : (text, params) => new Promise( async (resolve,reject) => {
-        await pool.query(text, params)
-                  .then(res => resolve(res))
-                  .catch(err => reject(err))
-    })
+    query : text => new Promise( async (resolve,reject) => await pool.query(text).then(res => resolve(res))
+                                                                                 .catch(err => reject(err)))
 }
-

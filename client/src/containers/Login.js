@@ -24,15 +24,11 @@ class Login extends Component {
             disabled : false,
             fields : []
         }, () => {
-            if(this.state.login.trim() === '') this.setState({
-                error : 'Invalid login',
-                fields : [...this.state.fields, 'login']
-            })
-            if(this.state.login.length < 8) this.setState({
+            if(this.state.login.trim().length < 8) this.setState({
                 error : 'Login length is too small',
                 fields : [...this.state.fields, 'login']
             })
-            if(this.state.login.length > 20) this.setState({
+            if(this.state.login.trim().length > 20) this.setState({
                 error : 'Login length is too big',
                 fields : [...this.state.fields, 'login']
             })
@@ -46,15 +42,11 @@ class Login extends Component {
             disabled : false,
             fields : []
         }, () => {
-            if(this.state.password.trim() === '') this.setState({
-                error : 'Invalid password',
-                fields : [...this.state.fields, 'password']
-            })
-            if(this.state.password.length < 8) this.setState({
+            if(this.state.password.trim().length < 8) this.setState({
                 error : 'Password length is too small',
                 fields : [...this.state.fields, 'password']
             })
-            if(this.state.password.length > 20) this.setState({
+            if(this.state.password.trim().length > 20) this.setState({
                 error : 'Password length is too big',
                 fields : [...this.state.fields, 'password']
             })

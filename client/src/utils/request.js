@@ -13,23 +13,24 @@ export const request = (method,path,data) => new Promise((resolve,reject) => {
         method: method,
         headers: headers
     }
-    fetch(`http://localhost:3001/api${path}`, options)
+    fetch(`http://localhost:3002/api${path}`, options)
         .then(response => response.json().then(json => resolve(json)))
         .catch(e => reject(e))
 })
 
 
-export const requestFile = (method,path,file) => new Promise((resolve,reject) => {
+export const requestWithFile = (method,path,data,file) => new Promise((resolve,reject) => {
     const headers = new Headers()
     headers.append('Authorization',`${getToken()}`)
     let formData = new FormData()
-    formData.append('file', file)
+    for (let key in data) formData.append(key, data[key])
+    formData.append('image', file)
     const options =  {
         method: method,
         body : formData,
         headers: headers
     }
-    fetch(`http://localhost:3001/api${path}`, options)
+    fetch(`http://localhost:3002/api${path}`, options)
         .then(response => response.json().then(json => resolve(json)))
         .catch(e => reject(e))
 })
