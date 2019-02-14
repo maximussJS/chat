@@ -22,7 +22,7 @@ const imageToBase64 = photo => {
 module.exports = photo => new Promise(async (resolve,reject) => {
     try {
         const normalizedPhoto = imageToBase64(photo)
-        const result = await UploadPhoto(photo.name, normalizedPhoto, {
+        const result = await UploadPhoto(normalizedPhoto, {
             use_filename : true
         })
         result && result.secure_url ? resolve(result.secure_url) : reject('Cannot upload photo')

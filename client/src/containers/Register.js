@@ -146,9 +146,7 @@ class Register extends Component {
                 name : name,
                 login : login,
                 password : password,
-            },{
-                image : image
-            })
+            },image)
             this.props.history.push(response.success ? '/login' : '/error')
         }
         catch (e) {
