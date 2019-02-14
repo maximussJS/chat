@@ -1,4 +1,4 @@
 module.exports = {
     getAllUsers : () => 'SELECT * FROM users;',
-    getUserByLoginAndPassword : (login, password) => `SELECT * FROM users WHERE login = ${login}, password = ${password} ;`
+    getUserByLoginAndPassword : (login, pass) => `SELECT * FROM users WHERE login = '${login}' AND password = '${pass}';`
 }

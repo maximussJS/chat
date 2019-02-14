@@ -11,7 +11,6 @@ const app = express()
 
 app.use(morgan('dev'))
 app.use(cors())
-app.use(require('./routes'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
     extended: true
@@ -20,5 +19,7 @@ app.use(busboyBodyParser({
     limit : '50mb'
 }))
 
+
+app.use(require('./routes'))
 
 app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}`))

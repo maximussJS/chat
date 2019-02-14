@@ -4,13 +4,14 @@ import {getToken} from './auth'
 export const request = (method,path,data) => new Promise((resolve,reject) => {
     const headers = new Headers()
     headers.append('Authorization',`${getToken()}`)
+    headers.append('Content-Type', 'application/json')
     const options = data ? {
         method: method,
         body: JSON.stringify(data),
-        headers: headers,
+        headers: headers
     } : {
         method: method,
-        headers: headers,
+        headers: headers
     }
     fetch(`http://localhost:3001/api${path}`, options)
         .then(response => response.json().then(json => resolve(json)))
