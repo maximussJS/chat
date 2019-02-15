@@ -141,7 +141,6 @@ class Register extends Component {
     onSubmit = async () => {
         try {
             const {name,login,password,image} = this.state
-            alert(JSON.stringify(this.state))
             const response = await register({
                 name : name,
                 login : login,

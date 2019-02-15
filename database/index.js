@@ -1,4 +1,5 @@
 const Pool = require('pg').Pool
+const {createUserTable, deleteUserTable} = require('../utils/queries')
 
 
 const pool = new Pool({
@@ -24,15 +25,7 @@ pool.connect()
 
 
 const createTables = () => {
-    const text =
-        `CREATE TABLE IF EXISTS users(
-        id UUID PRIMARY KEY,
-        name VARCHAR(128) NOT NULL,
-        login VARCHAR(128) UNIQUE NOT NULL,
-        password VARCHAR(256) NOT NULL,
-        image VARCHAR(256) NOT NULL,
-        created TIMESTAMP);`
-    pool.query(text)
+    pool.query(createUserTable())
         .then(res => {
             console.log(res)
             pool.end()
@@ -44,9 +37,8 @@ const createTables = () => {
 }
 
 
-const dropTable = tableName => {
-    const text = 'DROP TABLE IF EXISTS users'
-    pool.query(text)
+const dropTable = () => {
+    pool.query(deleteUserTable())
         .then(res => {
             console.log(res)
             pool.end()
