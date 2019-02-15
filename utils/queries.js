@@ -20,5 +20,5 @@ module.exports = {
         `INSERT INTO users (name, login, password, image)
          VALUES ('${name}', '${login}', '${password}', '${image}') RETURNING *;`,
 
-    deleteUserByLogin : login => `DELETE FROM users WHERE login = '${login}';`
+    deleteUserByLogin : login => `DELETE FROM users WHERE login = '${login}' RETURNING *;`
 }

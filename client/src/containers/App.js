@@ -1,11 +1,12 @@
 import React,{Component} from 'react'
 import {Route,Switch} from 'react-router-dom'
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
-import Register from '../containers/Register'
-import Login from '../containers/Login'
-import theme from '../theme/MuiTheme'
-import Layout from '../components/Layout'
 import '../css/App.css'
+import theme from '../theme/MuiTheme'
+import Main from '../containers/Main'
+import Login from '../containers/Login'
+import Register from '../containers/Register'
+import Layout from '../components/Layout'
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 
 
 export default class App extends Component {
@@ -14,8 +15,9 @@ export default class App extends Component {
             <MuiThemeProvider theme={theme}>
                 <Layout>
                     <Switch>
-                        <Route exact component={Register} path='/register'/>
+                        <Route exact component={Main} path='/'/>
                         <Route exact component={Login} path='/login'/>
+                        <Route exact component={Register} path='/register'/>
                     </Switch>
                 </Layout>
             </MuiThemeProvider>

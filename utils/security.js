@@ -10,7 +10,6 @@ module.exports = {
         return hmac.digest('hex')
     },
     generateToken : user => sign({
-        id : parseInt(user.id),
         user : user
     }, process.env.JWT_SECRET),
     verifyToken : token => {
@@ -18,9 +17,7 @@ module.exports = {
         else {
             const payload = verify(token, process.env.JWT_SECRET)
             return {
-                userID: parseInt(payload.user_id),
-                login: payload.login,
-                role: payload.role
+                user : payload.user
             }
         }
     }

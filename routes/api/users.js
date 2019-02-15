@@ -1,10 +1,11 @@
 const router = require('express').Router()
 const {query} = require('../../database')
+const authorized = require('../../middlewares/authorized')
 const {successResponse, failureResponse} = require('../../utils/responses')
 const {getAllUsers, getUserByLogin, deleteUserByLogin} = require('../../utils/queries')
 
 
-router.get('/:login', async (req,res) => {
+router.get('/:login', authorized, async (req,res) => {
     try {
         const login = req.params.login.toString()
         if(!login) return res.status(400).json(failureResponse('Login param is required'))
@@ -22,7 +23,8 @@ router.get('/:login', async (req,res) => {
     }
 })
 
-router.get('/', async (req,res) => {
+
+router.get('/', authorized, async (req,res) => {
     try {
         const {
             rows : [users]
@@ -36,18 +38,23 @@ router.get('/', async (req,res) => {
     }
 })
 
-router.put('/', async (req,res) => {
 
-})
-
-router.delete('/', async (req,res) => {
+router.delete('/', authorized, async (req,res) => {
     try {
-
+        const {login} = req.local.user
+        if(!login) throw new Error('No login field in authorized user')
+        const {
+            rows : [user]
+        } = await query(deleteUserByLogin(login))
+        if(!user) return res.status(400).json(failureResponse(`No user with login : ${login}`))
+        req.local = null
+        return res.status(200).json(successResponse('OK'))
     }
     catch (e) {
         console.error(`DELETE USER ERROR : ${e}`)
         return res.status(500).json(failureResponse('Internal Server Error'))
     }
 })
+
 
 module.exports = router
