@@ -24,7 +24,7 @@ router.get('/:login', async (req,res) => {
 
 router.post('/', async (req,res) => {
     try {
-        const {body} = body
+        const {body} = req
         if(!body.login) return res.status(400).json(failureResponse('Login is required'))
         if(!body.password) return res.status(400).json(failureResponse('Password is required'))
         if(body.login.length < 8) return res.status(400).json(failureResponse('Login length is too small'))

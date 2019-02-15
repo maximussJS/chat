@@ -28,8 +28,13 @@ router.post('/', async (req,res) => {
         if(user) return res.status(400).json(failureResponse(`User with login ${login} already exists`))
         const image_url = await upload(image)
         if(!image_url) return res.status(400).json(failureResponse('Error to upload image file'))
-        await query(`INSERT INTO users (name, login, password, image)
-        VALUES ('${name}', '${login}', '${password}', '${image_url}');`)
+        const {
+            rows : [newUser]
+        } = await query(insertNewUser(name,login,encryptPassword(password),image_url))
+        if(!newUser) {
+            console.error('Postgres Insert New User Error')
+            return res.status(500).json('Server Error')
+        }
         return res.status(201).json(successResponse(`User ${name} with login ${login} was created!`))
     }
     catch (e) {
