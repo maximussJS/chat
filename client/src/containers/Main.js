@@ -1,5 +1,6 @@
 import React,{Component} from 'react'
 import {withRouter} from 'react-router-dom'
+import Chat from '../components/Chat'
 import {getMessages} from '../utils/requests'
 import {isAuthenticated} from '../utils/auth'
 
@@ -36,7 +37,7 @@ class Main extends Component {
 
     render() {
         return (
-            <div>hi</div>
+            <Chat/>
         )
     }
 }
