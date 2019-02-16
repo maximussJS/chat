@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
 import {withRouter} from 'react-router-dom'
-import Chat from '../components/Chat'
+import MainPage from '../components/Main'
 import {getMessages} from '../utils/requests'
 import {isAuthenticated} from '../utils/auth'
 
@@ -9,7 +9,10 @@ class Main extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            messages : []
+            messages : [],
+            text : '',
+            disabled : true,
+            error : ''
         }
     }
 
@@ -31,13 +34,29 @@ class Main extends Component {
 
     componentWillUnmount = () => this.socket.close()
 
+    onInputChange = e => {
+        this.setState({
+            text : e.target.value,
+            disabled : false
+        })
+        if(this.state.text.trim().length === 0) this.setState({
+            error : 'Text field is empty'
+        })
+    }
+
     addMessage = msg => this.setState(state => ({
         messages : [msg, ...state.messages]
     }))
 
+    onClick = () => {
+        this.addMessage({
+            text : this.state.text
+        })
+    }
+
     render() {
         return (
-            <Chat/>
+            <MainPage onInputChange={this.onInputChange}/>
         )
     }
 }

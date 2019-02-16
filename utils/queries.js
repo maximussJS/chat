@@ -1,6 +1,6 @@
 module.exports = {
     createUserTable : () =>
-            `CREATE TABLE IF EXISTS users(
+            `CREATE TABLE IF NOT EXISTS users(
              id SERIAL PRIMARY KEY,
              name VARCHAR(20) NOT NULL,
              login VARCHAR(20) UNIQUE NOT NULL,
@@ -8,7 +8,7 @@ module.exports = {
              image VARCHAR(250) NOT NULL,
              created TIMESTAMP);`,
 
-    deleteUserTable : () => 'DROP TABLE IF EXISTS users;',
+    deleteTable : tableName => `DROP TABLE IF EXISTS ${tableName};`,
 
     getAllUsers : () => 'SELECT * FROM users ;',
 
@@ -21,4 +21,11 @@ module.exports = {
          VALUES ('${name}', '${login}', '${password}', '${image}') RETURNING *;`,
 
     deleteUserByLogin : login => `DELETE FROM users WHERE login = '${login}' RETURNING *;`
+
+    createMessageTable : () =>
+            `CREATE TABLE IF NOT EXISTS messages(
+             id SERIAL PRIMARY KEY,
+             author JSON NOT NULL,
+             text VARCHAR(200) NOT NULL, 
+             created TIMESTAMP DEFAULT NOW());`,
 }

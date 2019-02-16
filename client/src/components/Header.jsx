@@ -26,7 +26,7 @@ const Header = ({
                     <Typography variant="h6"
                                 color="inherit"
                                 className={grow}>
-                        News
+                        Chat
                     </Typography>
                     <Button color="inherit">
                         Login
