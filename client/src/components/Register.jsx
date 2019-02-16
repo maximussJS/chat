@@ -1,5 +1,6 @@
 import React from 'react'
 import propTypes from 'prop-types'
+import {withStyles} from '@material-ui/core/styles'
 import Stepper from '@material-ui/core/Stepper'
 import Step from '@material-ui/core/Step'
 import StepLabel from '@material-ui/core/StepLabel'
@@ -7,17 +8,17 @@ import StepContent from '@material-ui/core/StepContent'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Content from '../components/RegisterContent'
+import style from '../theme/Register'
 
 
 const Register = ({
-    root,
+    classes,
     error,
     fields,
-    button,
     steps,
+    loading,
     disabled,
     activeStep,
-    actionsContainer,
     onSubmit,
     handleBack,
     handleNext,
@@ -28,7 +29,7 @@ const Register = ({
     onPasswordChange,
     onConfirmPasswordChange
 }) =>
-    <div className={root}>
+    <div className={classes.root}>
         <Stepper activeStep={activeStep}
                  orientation="vertical">
             {steps.map((label, index) => (
@@ -49,19 +50,20 @@ const Register = ({
                                      onPasswordChange={onPasswordChange}
                                      onConfirmPasswordChange={onConfirmPasswordChange}/>
                         </Typography>
-                        <div className={actionsContainer}>
+                        <div className={classes.actionsContainer}>
                             <div>
                                 <Button disabled={activeStep === 0}
                                         onClick={() => handleBack()}
-                                        className={button}>
+                                        className={classes.button}>
                                     Back
                                 </Button>
                                 <Button variant="contained"
                                         color="primary"
                                         disabled={activeStep === steps.length - 1
-                                            ? false : disabled || fields.length !== 0 || isDisabled(activeStep)}
+                                            ? false
+                                            : loading || disabled || fields.length !== 0 || isDisabled(activeStep)}
                                         onClick={activeStep === steps.length - 1 ? () => onSubmit() : () => handleNext()}
-                                        className={button}>
+                                        className={classes.button}>
                                     {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                                 </Button>
                             </div>
@@ -77,6 +79,7 @@ Register.propTypes = {
     error : propTypes.string.isRequired,
     fields : propTypes.array.isRequired,
     steps : propTypes.number.isRequired,
+    loading : propTypes.bool.isRequired,
     disabled : propTypes.bool.isRequired,
     activeStep : propTypes.number.isRequired,
     handleBack : propTypes.func.isRequired,
@@ -90,4 +93,4 @@ Register.propTypes = {
 }
 
 
-export default Register
+export default withStyles(style)(Register)

@@ -21,4 +21,5 @@ app.use(busboyBodyParser({
 
 app.use(require('./routes'))
 
-app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}`))
+
+module.exports = app

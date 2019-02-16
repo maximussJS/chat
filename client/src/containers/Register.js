@@ -1,8 +1,6 @@
 import React, {Component} from 'react'
 import {withRouter} from 'react-router-dom'
-import style from '../theme/Register'
 import RegisterForm from '../components/Register'
-import {withStyles} from '@material-ui/core/styles'
 import {isLoginUnique,register} from '../utils/requests'
 
 
@@ -16,6 +14,7 @@ class Register extends Component {
             confirmPassword : '',
             image : '',
             activeStep : 0,
+            loading : false,
             disabled : true,
             fields : [],
             error : ''
@@ -138,32 +137,33 @@ class Register extends Component {
 
     getSteps = () => ['Input your name and login', 'Input password', 'Choose image', 'Congratulations']
 
-    onSubmit = async () => {
-        try {
-            const {name,login,password,image} = this.state
-            const response = await register({
-                name : name,
-                login : login,
-                password : password,
-            },image)
-            this.props.history.push(response.success ? '/login' : '/error')
-        }
-        catch (e) {
-            this.props.history.push('/error')
-        }
+    onSubmit = () => {
+        this.setState({
+            loading : true
+        }, async () => {
+            try {
+                const {name,login,password,image} = this.state
+                const response = await register({
+                    name : name,
+                    login : login,
+                    password : password,
+                },image)
+                this.props.history.push(response.success ? '/login' : '/error')
+            }
+            catch (e) {
+                this.props.history.push('/error')
+            }
+        })
     }
 
     render() {
-        const {root,actionsContainer,button} = this.props.classes
-        const {activeStep,error,fields,disabled} = this.state
+        const {activeStep,error,fields,disabled,loading} = this.state
         return (
-            <RegisterForm root={root}
-                          error={error}
+            <RegisterForm error={error}
                           fields={fields}
-                          button={button}
+                          loading={loading}
                           disabled={disabled}
                           activeStep={activeStep}
-                          actionsContainer={actionsContainer}
                           steps={this.getSteps()}
                           onSubmit={this.onSubmit}
                           handleBack={this.handleBack}
@@ -179,4 +179,4 @@ class Register extends Component {
 }
 
 
-export default withRouter(withStyles(style)(Register))
+export default withRouter(Register)

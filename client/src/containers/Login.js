@@ -12,6 +12,7 @@ class Login extends Component {
             login : '',
             password : '',
             error : '',
+            loading :false,
             disabled : true,
             fields : []
         }
@@ -58,33 +59,38 @@ class Login extends Component {
         return login === '' || password === ''
     }
 
-    onSubmit = async () => {
-        try {
-            const {login,password} = this.state
-            const response = await submit({
-                login : login,
-                password : password
-            })
-            if(response.success) {
-                authenticate(response.token)
-                this.props.history.push('/')
+    onSubmit = () => {
+        this.setState({
+            loading: true,
+        }, async () => {
+            try {
+                const {login, password} = this.state
+                const response = await submit({
+                    login: login,
+                    password: password
+                })
+                if (response.success) {
+                    authenticate(response.token)
+                    this.props.history.push('/')
+                } else this.setState({
+                    error: response.message,
+                    loading: false,
+                    fields: [...this.state.fields, 'password']
+                })
             }
-            else this.setState({
-                error : response.message,
-                fields : [...this.state.fields, 'password']
-            })
-        }
-        catch (e) {
-            this.props.history.push('/error')
-        }
+            catch (e) {
+                this.props.history.push('/error')
+            }
+        })
     }
 
     render() {
-        const {error,fields,disabled} = this.state
+        const {error,fields,disabled,loading} = this.state
         return (
              <LoginForm error={error}
                         fields={fields}
                         disabled={disabled}
+                        loading={loading}
                         onSubmit={this.onSubmit}
                         onLoginChange={this.onLoginChange}
                         onPasswordChange={this.onPasswordChange}

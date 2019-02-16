@@ -13,7 +13,7 @@ export const request = (method,path,data) => new Promise((resolve,reject) => {
         method: method,
         headers: headers
     }
-    fetch(`http://localhost:3003/api${path}`, options)
+    fetch(`${process.env.REACT_APP_API_URL}${path}`, options)
         .then(response => response.json().then(json => resolve(json)))
         .catch(e => reject(e))
 })
@@ -30,7 +30,7 @@ export const requestWithFile = (method,path,data,file) => new Promise((resolve,r
         body : formData,
         headers: headers
     }
-    fetch(`http://localhost:3003/api${path}`, options)
+    fetch(`${process.env.REACT_APP_API_URL}${path}`, options)
         .then(response => response.json().then(json => resolve(json)))
         .catch(e => reject(e))
 })
