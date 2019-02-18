@@ -19,15 +19,9 @@ cli.on('connect', () => console.log('Redis connected'))
 
 module.exports = {
     set : async (login, online) => await cli.set(login, online),
-    get : async login => await cli.get(login, (err, value) => {
-        if(err) {
-            console.error(`REDIS GET ERROR ${err}`)
-            throw new Error('REDIS GET ERROR')
-        }
-        return value
-    }),
-    getOnline : async () => await cli.keys('*', async (err, keys) => {
-        err && console.error(`REDIS GET ONLINE ERROR : ${err}`)
+    get : async login => await cli.get(login),
+    getOnline :  async () => {
+        const keys = await cli.keys('*', (err, keys) => keys)
         console.log(keys)
-    })
+    }
 }

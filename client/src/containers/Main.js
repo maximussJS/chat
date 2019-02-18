@@ -51,7 +51,13 @@ class Main extends Component {
             }))
         }
         this.socket.onmessage = msg => this.addMessage(JSON.parse(msg.data))
-        this.socket.onclose = () => console.log('Socket Error')
+        this.socket.onclose = () => {
+            this.socket.send(JSON.stringify({
+                type : 'offline',
+                login : this.state.user.login
+            }))
+            console.log('Socket Error')
+        }
     }
 
     onInputChange = e => {
