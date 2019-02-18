@@ -27,8 +27,7 @@ const Message = ({
                                               color="textPrimary">
                                       {msg.author.login}
                                   </Typography>
-                              </Fragment>}
-            />
+                              </Fragment>}/>
         </ListItem>
     </GridListTile>
 

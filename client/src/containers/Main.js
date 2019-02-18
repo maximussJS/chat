@@ -18,18 +18,29 @@ class Main extends Component {
 
     socket = new WebSocket(process.env.REACT_APP_WS_URL)
 
-    componentDidMount = async () => {
-        try {
-            if(isAuthenticated()) {
-                this.socket.onopen = () => console.log(`Socket Connected to ${process.env.REACT_APP_WS_URL}`)
-                this.socket.onmessage = msg => this.addMessage(msg)
-                this.socket.onclose = () => console.log('Socket closed')
-            }
-            else this.props.history.push('/login')
+    componentDidMount = () => {
+        if(isAuthenticated()) {
+            this.setState({
+                user: getUser()
+            }, async () => {
+                try {
+                    const response = await getMessages()
+                    if(response.success) {
+                        this.setState({
+                            messages : response.data
+                        })
+                        this.socket.onopen = () => console.log(`Socket Connected to ${process.env.REACT_APP_WS_URL}`)
+                        this.socket.onmessage = msg => this.addMessage(JSON.parse(msg.data))
+                        this.socket.onclose = () => console.log('Socket closed')
+                    }
+                    else this.props.history.push('/error')
+                }
+                catch (e) {
+                    this.props.history.push('/error')
+                }
+            })
         }
-        catch (e) {
-            this.props.history.push('/error')
-        }
+        else this.props.history.push('/login')
     }
 
     componentWillUnmount = () => this.socket.close()
@@ -51,11 +62,18 @@ class Main extends Component {
     }))
 
     onClick = () => {
+        const {text,user} = this.state
+        this.socket.send(JSON.stringify({
+            text : text,
+            author : {
+                login : user.login,
+                image : user.image
+            }
+        }))
         this.addMessage({
             text : this.state.text,
             author : getUser()
         })
-
     }
 
     render() {

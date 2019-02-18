@@ -29,7 +29,7 @@ router.get('/', authorized, async (req,res) => {
         const {
             rows : [users]
         } = await query(getAllUsers())
-        if(!users) return res.status(400).json(failureResponse('No users'))
+        if(!users) return res.status(200).json(failureResponse('No users'))
         return res.status(200).json(successResponse('OK', null, users))
     }
     catch (e) {

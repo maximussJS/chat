@@ -36,8 +36,10 @@ const Main = ({
 Main.propTypes = {
     classes : propTypes.object.isRequired,
     items : propTypes.arrayOf(object).isRequired,
+    error : propTypes.string.isRequired,
+    disabled : propTypes.bool.isRequired,
+    onClick : propTypes.func.isRequired,
     onInputChange : propTypes.func.isRequired,
-    onClick : propTypes.func.isRequired
 }
 
 
