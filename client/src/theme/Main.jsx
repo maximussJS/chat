@@ -3,7 +3,7 @@ const style = theme => ({
         flexGrow: 1,
     },
     paper: {
-        height: 140,
+        height: 80,
         width: 100,
     },
     control: {

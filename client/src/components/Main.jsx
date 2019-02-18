@@ -1,7 +1,6 @@
 import React from 'react'
-import propTypes from 'prop-types'
+import propTypes, {object} from 'prop-types'
 import {withStyles} from "@material-ui/core/styles"
-import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import Input from '../components/Input'
 import Chat from '../components/Chat'
@@ -10,32 +9,35 @@ import style from '../theme/Main'
 
 const Main = ({
     classes,
-    onInputChange
+    items,
+    error,
+    disabled,
+    onInputChange,
+    onClick
 }) =>
-    <Grid container
-          className={classes.root}>
-        <Grid container
-              className={'chat-grid'}
-              alignItems={'center'}
-              direction={'column'}
-              justify={'center'}>
-            <h3>
-                Chat
-            </h3>
-            <Chat className={'chat'}/>
-            <Input label={'Text message'}
-                   onChange={onInputChange}
-                   fullWidth={false}/>
-            <Button variant={'contained'}
-                    color={'primary'}>
-                Send
-            </Button>
-        </Grid>
-    </Grid>
+    <div>
+        <Chat items={items}/>
+        <Input label={'Text message'}
+               onChange={onInputChange}
+               fullWidth={true}
+               error={error}
+               helper={error}
+               helperText={error}/>
+        <Button variant={'contained'}
+                color={'primary'}
+                disabled={disabled}
+                className={'center'}
+                onClick={onClick}>
+    Send
+</Button>
+    </div>
 
 
 Main.propTypes = {
-    classes : propTypes.object.isRequired
+    classes : propTypes.object.isRequired,
+    items : propTypes.arrayOf(object).isRequired,
+    onInputChange : propTypes.func.isRequired,
+    onClick : propTypes.func.isRequired
 }
 
 

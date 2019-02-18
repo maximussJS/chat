@@ -21,7 +21,8 @@ const Body = ({
                   alignItems={'center'}>
                 {children}
             </Grid>
-            <Grid container md={2}/>
+            <Grid container
+                  md={2}/>
         </Grid>
         <div className={classes.drawerHeader} />
     </main>

@@ -2,7 +2,7 @@ import React,{Component} from 'react'
 import {withRouter} from 'react-router-dom'
 import MainPage from '../components/Main'
 import {getMessages} from '../utils/requests'
-import {isAuthenticated} from '../utils/auth'
+import {isAuthenticated, getUser} from '../utils/auth'
 
 
 class Main extends Component {
@@ -37,26 +37,35 @@ class Main extends Component {
     onInputChange = e => {
         this.setState({
             text : e.target.value,
-            disabled : false
+            disabled : false,
+            error : ''
         })
         if(this.state.text.trim().length === 0) this.setState({
-            error : 'Text field is empty'
+            error : 'Text field is empty',
+            disabled : true
         })
     }
 
     addMessage = msg => this.setState(state => ({
-        messages : [msg, ...state.messages]
+        messages : [...state.messages, msg]
     }))
 
     onClick = () => {
         this.addMessage({
-            text : this.state.text
+            text : this.state.text,
+            author : getUser()
         })
+
     }
 
     render() {
+        const {messages,error,disabled} = this.state
         return (
-            <MainPage onInputChange={this.onInputChange}/>
+            <MainPage items={messages}
+                      error={error}
+                      disabled={disabled}
+                      onInputChange={this.onInputChange}
+                      onClick={this.onClick}/>
         )
     }
 }

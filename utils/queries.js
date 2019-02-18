@@ -20,7 +20,7 @@ module.exports = {
         `INSERT INTO users (name, login, password, image)
          VALUES ('${name}', '${login}', '${password}', '${image}') RETURNING *;`,
 
-    deleteUserByLogin : login => `DELETE FROM users WHERE login = '${login}' RETURNING *;`
+    deleteUserByLogin : login => `DELETE FROM users WHERE login = '${login}' RETURNING *;`,
 
     createMessageTable : () =>
             `CREATE TABLE IF NOT EXISTS messages(
