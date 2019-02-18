@@ -1,24 +1,24 @@
 import React,{Component} from 'react'
 import {withRouter} from 'react-router-dom'
 import MainPage from '../components/Main'
-import {getMessages} from '../utils/requests'
 import {isAuthenticated, getUser} from '../utils/auth'
+import {getMessages, createMessage} from '../utils/requests'
 
 
 class Main extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            messages : [],
-            text : '',
-            disabled : true,
-            error : ''
+            messages: [],
+            text: '',
+            disabled: true,
+            error: '',
         }
     }
 
     socket = new WebSocket(process.env.REACT_APP_WS_URL)
 
-    componentDidMount = () => {
+    componentDidMount() {
         if(isAuthenticated()) {
             this.setState({
                 user: getUser()
@@ -29,9 +29,6 @@ class Main extends Component {
                         this.setState({
                             messages : response.data
                         })
-                        this.socket.onopen = () => console.log(`Socket Connected to ${process.env.REACT_APP_WS_URL}`)
-                        this.socket.onmessage = msg => this.addMessage(JSON.parse(msg.data))
-                        this.socket.onclose = () => console.log('Socket closed')
                     }
                     else this.props.history.push('/error')
                 }
@@ -43,7 +40,19 @@ class Main extends Component {
         else this.props.history.push('/login')
     }
 
-    componentWillUnmount = () => this.socket.close()
+    componentWillMount() {
+        this.socket.onopen = () => {
+            this.socket.send(JSON.stringify({
+                type : 'online',
+                login : this.state.user.login
+            }))
+            this.socket.send(JSON.stringify({
+                type : 'all'
+            }))
+        }
+        this.socket.onmessage = msg => this.addMessage(JSON.parse(msg.data))
+        this.socket.onclose = () => console.log('Socket Error')
+    }
 
     onInputChange = e => {
         this.setState({
@@ -61,19 +70,19 @@ class Main extends Component {
         messages : [...state.messages, msg]
     }))
 
-    onClick = () => {
-        const {text,user} = this.state
-        this.socket.send(JSON.stringify({
-            text : text,
-            author : {
-                login : user.login,
-                image : user.image
-            }
-        }))
-        this.addMessage({
+    onClick = async () => {
+        const msg = {
+            type : 'message',
             text : this.state.text,
-            author : getUser()
-        })
+            author : {
+                login : this.state.user.login,
+                image : this.state.user.image
+            }
+        }
+        this.socket.send(JSON.stringify(msg))
+        this.addMessage(msg)
+        const response = await createMessage(msg)
+        if(!response.success) this.props.history.push('/error')
     }
 
     render() {

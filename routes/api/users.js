@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {query} = require('../../database')
+const {query} = require('../../databases/postgres')
 const authorized = require('../../middlewares/authorized')
 const {successResponse, failureResponse} = require('../../utils/responses')
 const {getAllUsers, getUserByLogin, deleteUserByLogin} = require('../../utils/queries')
@@ -12,10 +12,10 @@ router.get('/:login', authorized, async (req,res) => {
         if(login.trim().length < 8) return res.status(400).json(failureResponse('Login minimal length is 8 symbols'))
         if(login.trim().length > 20) return res.status(400).json(failureResponse('Login maximal length is 20 symbols'))
         const {
-            rows : [user]
+            rows
         } = await query(getUserByLogin(login))
-        if(!user) return res.status(400).json(`No such user with login : ${login}`)
-        return res.status(200).json(successResponse('OK'), null, user)
+        if(!rows) return res.status(400).json(`No such user with login : ${login}`)
+        return res.status(200).json(successResponse('OK'), null, rows)
     }
     catch (e) {
         console.error(`GET USER ERROR : ${e}`)

@@ -24,24 +24,6 @@ const Chat = ({
                   cols={1}
                   spacing={1}
                   className={classes.gridList}>
-            <GridListTile className={classes.inline}>
-                <ListItem alignItems="flex-start">
-                    <ListItemAvatar>
-                        <Avatar alt="Remy Sharp"
-                                src="https://res.cloudinary.com/maximuss/image/upload/v1549458036/p9ecrlyim4lgernt0hjy.png" />
-                    </ListItemAvatar>
-                    <ListItemText primary="Brunch this weekend?"
-                                  secondary={
-                                      <React.Fragment>
-                                          <Typography component="span"
-                                                      className={classes.inline}
-                                                      color="textPrimary">
-                                              Ali Connors
-                                          </Typography>
-                                      </React.Fragment>}
-                    />
-                </ListItem>
-            </GridListTile>
             {items ?
                 items.map(key => <Message msg={key}
                                           inline={classes.inline}/>)

@@ -1,5 +1,5 @@
 require('dotenv').load()
-require('./database')
+require('./databases')
 
 const express = require('express')
 const cors = require('cors')

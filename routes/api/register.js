@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const upload = require('../../utils/upload')
-const {query} = require('../../database')
+const {query} = require('../../databases/postgres')
 const {encryptPassword} = require('../../utils/security')
 const {getUserByLogin, insertNewUser} = require('../../utils/queries')
 const {successResponse, failureResponse} = require('../../utils/responses')

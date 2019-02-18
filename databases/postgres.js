@@ -15,7 +15,7 @@ pool.on('error', err => console.error(`Postgres Error : ${err}`))
 
 pool.connect()
     .then(cli => {
-        console.log('Connected to Postgres')
+        console.log('Postgres connected')
         cli.release()
     })
     .catch(e => {

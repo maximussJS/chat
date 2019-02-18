@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {query} = require('../../database')
+const {query} = require('../../databases/postgres')
 const authorize = require('../../middlewares/authorized')
 const {successResponse, failureResponse} = require('../../utils/responses')
 const {getAllMessages, getUserByLogin, insertNewMessage} = require('../../utils/queries')
@@ -8,10 +8,10 @@ const {getAllMessages, getUserByLogin, insertNewMessage} = require('../../utils/
 router.get('/', authorize, async (req,res) => {
     try {
         const {
-            rows : [msg]
+           rows
         } = await query(getAllMessages())
-        if(!msg) return res.status(200).failureResponse('No messages')
-        return res.status(200).json(successResponse('OK', null, msg))
+        if(!rows) return res.status(200).json(successResponse('No messages'))
+        return res.status(200).json(successResponse('OK', null, rows))
     }
     catch (e) {
         console.error(`GET MESSAGES ERROR : ${e}`)

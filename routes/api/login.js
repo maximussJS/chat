@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {query} = require('../../database')
+const {query} = require('../../databases/postgres')
 const {encryptPassword, generateToken} = require('../../utils/security')
 const {successResponse, failureResponse} = require('../../utils/responses')
 const {getUserByLogin, getUserByLoginAndPassword} = require('../../utils/queries')

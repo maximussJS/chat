@@ -1,5 +1,6 @@
 const {Server, OPEN} = require('ws')
 const server = require('http').createServer()
+const {getOnline,get,set} = require('./databases/redis-cli')
 
 
 const ws = new Server({
@@ -10,8 +11,25 @@ server.on('request', require('./app'))
 
 ws.on('open', () => console.log(`Web Socket Server started on PORT : ${process.env.PORT}`))
   .on('connection', socket => {
-      socket.on('message', data => {
-          ws.clients.forEach(cli => cli !== socket && cli.readyState === OPEN && cli.send(data))
+      socket.on('message', async data => {
+          console.log(data)
+          let msg = JSON.parse(data)
+          switch (msg.type) {
+              case 'message':
+                  ws.clients.forEach(cli => cli !== socket && cli.readyState === OPEN && cli.send(data))
+                  break
+              case 'online':
+                  await set(msg.login, true)
+                  break
+              case 'offline':
+                  await set(msg.login, false)
+                  break
+              case 'all':
+                  const length = await getOnline()
+                  break
+              default:
+                  break
+          }
       })
 }).on('close', () => console.log(`Web Socket Server close`))
 
