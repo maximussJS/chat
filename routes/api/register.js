@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const upload = require('../../utils/upload')
-const {query} = require('../../databases/postgres')
+const pool = require('../../databases/postgres')
 const {encryptPassword} = require('../../utils/security')
 const {getUserByLogin, insertNewUser} = require('../../utils/queries')
 const {successResponse, failureResponse} = require('../../utils/responses')
@@ -24,13 +24,13 @@ router.post('/', async (req,res) => {
         if(!image.name) return res.status(400).json(failureResponse('Invalid image file'))
         const {
             rows : [user]
-        } = await query(getUserByLogin(login))
+        } = await pool.query(getUserByLogin(login))
         if(user) return res.status(400).json(failureResponse(`User with login ${login} already exists`))
         const image_url = await upload(image)
         if(!image_url) return res.status(400).json(failureResponse('Error to upload image file'))
         const {
             rows : [newUser]
-        } = await query(insertNewUser(name,login,encryptPassword(password),image_url))
+        } = await pool.query(insertNewUser(name,login,encryptPassword(password),image_url))
         if(!newUser) {
             console.error('Postgres Insert New User Error')
             return res.status(500).json('Server Error')

@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {query} = require('../../databases/postgres')
+const pool = require('../../databases/postgres')
 const authorized = require('../../middlewares/authorized')
 const {successResponse, failureResponse} = require('../../utils/responses')
 const {getAllUsers, getUserByLogin, deleteUserByLogin} = require('../../utils/queries')
@@ -13,7 +13,7 @@ router.get('/:login', authorized, async (req,res) => {
         if(login.trim().length > 20) return res.status(400).json(failureResponse('Login maximal length is 20 symbols'))
         const {
             rows
-        } = await query(getUserByLogin(login))
+        } = await pool.query(getUserByLogin(login))
         if(!rows) return res.status(400).json(`No such user with login : ${login}`)
         return res.status(200).json(successResponse('OK'), null, rows)
     }
@@ -28,7 +28,7 @@ router.get('/', authorized, async (req,res) => {
     try {
         const {
             rows : [users]
-        } = await query(getAllUsers())
+        } = await pool.query(getAllUsers())
         if(!users) return res.status(200).json(failureResponse('No users'))
         return res.status(200).json(successResponse('OK', null, users))
     }
@@ -45,7 +45,7 @@ router.delete('/', authorized, async (req,res) => {
         if(!login) throw new Error('No login field in authorized user')
         const {
             rows : [user]
-        } = await query(deleteUserByLogin(login))
+        } = await pool.query(deleteUserByLogin(login))
         if(!user) return res.status(400).json(failureResponse(`No user with login : ${login}`))
         req.local = null
         return res.status(200).json(successResponse('OK'))

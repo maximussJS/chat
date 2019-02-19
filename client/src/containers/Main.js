@@ -10,13 +10,43 @@ class Main extends Component {
         super(props)
         this.state = {
             messages: [],
-            online : '',
-            user : {},
+            online: '',
+            user: {},
             text: '',
             disabled: true,
             error: '',
         }
-        this.socket = {}
+        this.socket = new WebSocket(process.env.REACT_APP_WS_URL)
+        this.socket.onopen = () => {
+            this.socket.send(JSON.stringify({
+                type : 'online',
+                login : this.state.user.login
+            }))
+            this.socket.send(JSON.stringify({
+                type : 'all'
+            }))
+        }
+        this.socket.onmessage = msg => {
+            msg = JSON.parse(msg.data)
+            switch (msg.type) {
+                case 'all' :
+                    this.setState({
+                        online : msg.data
+                    })
+                    break
+                case 'message' :
+                    this.addMessage(msg)
+                    break
+                default :
+                    break
+            }
+        }
+        this.socket.onclose = () => {
+            this.socket.send(JSON.stringify({
+                type : 'offline',
+                login : this.state.user.login
+            }))
+        }
     }
 
     componentDidMount() {
@@ -29,39 +59,6 @@ class Main extends Component {
                     if(response.success) {
                         this.setState({
                             messages : response.data
-                        }, () => {
-                            this.socket = new WebSocket(process.env.REACT_APP_WS_URL)
-                            this.socket.onopen = () => {
-                                this.socket.send(JSON.stringify({
-                                    type : 'online',
-                                    login : this.state.user.login
-                                }))
-                                this.socket.send(JSON.stringify({
-                                    type : 'all'
-                                }))
-                            }
-                            this.socket.onmessage = msg => {
-                                msg = JSON.parse(msg.data)
-                                switch (msg.type) {
-                                    case 'all' :
-                                        this.setState({
-                                            online : msg.data
-                                        })
-                                        break
-                                    case 'message' :
-                                        this.addMessage(msg)
-                                        break
-                                    default :
-                                        break
-                                }
-                            }
-                            this.socket.onclose = () => {
-                                this.socket.send(JSON.stringify({
-                                    type : 'offline',
-                                    login : this.state.user.login
-                                }))
-                                console.log('Socket Error')
-                            }
                         })
                     }
                     else this.props.history.push('/error')
@@ -72,6 +69,11 @@ class Main extends Component {
             })
         }
         else this.props.history.push('/login')
+    }
+
+    componentWillUnmount() {
+        console.log('close socket')
+        this.socket.close()
     }
 
     onInputChange = e => {

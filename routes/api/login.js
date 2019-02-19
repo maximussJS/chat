@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {query} = require('../../databases/postgres')
+const pool = require('../../databases/postgres')
 const {encryptPassword, generateToken} = require('../../utils/security')
 const {successResponse, failureResponse} = require('../../utils/responses')
 const {getUserByLogin, getUserByLoginAndPassword} = require('../../utils/queries')
@@ -11,7 +11,7 @@ router.get('/:login', async (req,res) => {
         if(!login) return res.status(400).json('Login param is required')
         const {
             rows : [user]
-        } = await query(getUserByLogin(login))
+        } = await pool.query(getUserByLogin(login))
         if(user) return res.status(400).json('This login is already taken')
         return res.status(200).json(successResponse('OK'))
     }
@@ -33,7 +33,7 @@ router.post('/', async (req,res) => {
         if(body.password.length > 20) return res.status(400).json(failureResponse('Password length is too big'))
         const {
             rows : [user]
-        } = await query(getUserByLoginAndPassword(body.login,encryptPassword(body.password)))
+        } = await pool.query(getUserByLoginAndPassword(body.login,encryptPassword(body.password)))
         if(!user) return res.status(401).json(failureResponse('Invalid login or password'))
         const token = generateToken(user)
         return res.status(200).json(successResponse('OK',token))

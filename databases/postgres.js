@@ -49,8 +49,10 @@ const dropTable = () => {
         })
 }
 
+module.exports = pool
 
-module.exports = {
+
+/*module.exports = {
     query : text => new Promise( async (resolve,reject) => await pool.query(text).then(res => resolve(res))
                                                                                  .catch(err => reject(err)))
-}
+}*/
