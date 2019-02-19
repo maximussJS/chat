@@ -17,11 +17,8 @@ router.get('/', authorize, async (req,res) => {
         console.error(`GET MESSAGES ERROR : ${e}`)
         return res.status(500).json(failureResponse('Internal Server Error'))
     }
-})
-
-
-router.post('/', authorize, async (req,res) => {
-    try {
+}).post('/', authorize, async (req,res) => {
+        try {
         const {body} = req
         if(!body.text) return res.status(400).json(failureResponse('Text param is required'))
         if(body.text.trim().length === 0) return res.status(400).json(failureResponse('Invalid text'))

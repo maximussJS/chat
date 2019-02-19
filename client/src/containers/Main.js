@@ -89,7 +89,8 @@ class Main extends Component {
     }
 
     addMessage = msg => this.setState(state => ({
-        messages : [...state.messages, msg]
+        messages : [...state.messages, msg],
+        text : ''
     }))
 
     onClick = async () => {

@@ -19,10 +19,7 @@ router.get('/:login', async (req,res) => {
         console.error(`Is Login Unique Error ${e}`)
         return res.status(500).json(failureResponse('Internal Server Error'))
     }
-})
-
-
-router.post('/', async (req,res) => {
+}).post('/', async (req,res) => {
     try {
         const {body} = req
         if(!body.login) return res.status(400).json(failureResponse('Login is required'))
