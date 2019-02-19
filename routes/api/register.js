@@ -14,6 +14,7 @@ router.post('/', async (req,res) => {
         if(!body.login) return res.status(400).json(failureResponse('Login is required'))
         if(!body.password) return res.status(400).json(failureResponse('Password is required'))
         if(!image) return res.status(400).json(failureResponse('Image is required'))
+
         const {name,login,password} = body
         if(name.trim().length < 8) return res.status(400).json(failureResponse('Name minimal length is 8 symbols'))
         if(name.trim().length > 20) return res.status(400).json(failureResponse('Name maximal length is 20 symbols'))
@@ -22,12 +23,15 @@ router.post('/', async (req,res) => {
         if(password.trim().length < 8) return res.status(400).json(failureResponse('Password minimal length is 8 symbols'))
         if(password.trim().length < 8) return res.status(400).json(failureResponse('Password maximal length is 20 symbols'))
         if(!image.name) return res.status(400).json(failureResponse('Invalid image file'))
+
         const {
             rows : [user]
         } = await pool.query(getUserByLogin(login))
         if(user) return res.status(400).json(failureResponse(`User with login ${login} already exists`))
+
         const image_url = await upload(image)
         if(!image_url) return res.status(400).json(failureResponse('Error to upload image file'))
+
         const {
             rows : [newUser]
         } = await pool.query(insertNewUser(name,login,encryptPassword(password),image_url))

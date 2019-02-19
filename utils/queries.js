@@ -34,5 +34,9 @@ module.exports = {
 
     insertNewMessage : (text,login,image) => `INSERT INTO messages(text, login, image) 
                                               VALUES ('${text}', '${login}', '${image}')
-                                              RETURNING *;`
+                                              RETURNING *;`,
+
+    getAllChats : () => 'SELECT * FROM chats',
+
+    getChatByName : name => `SELECT * FROM chats WHERE name = '${name}' ;`
 }
