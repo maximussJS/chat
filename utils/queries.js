@@ -25,13 +25,14 @@ module.exports = {
     createMessageTable : () =>
             `CREATE TABLE IF NOT EXISTS messages(
              id SERIAL PRIMARY KEY,
-             author JSON NOT NULL,
-             text VARCHAR(200) NOT NULL, 
+             login VARCHAR(20) NOT NULL,
+             text VARCHAR(250) NOT NULL,
+             image VARCHAR(250) NOT NULL,
              created TIMESTAMP DEFAULT NOW());`,
 
     getAllMessages : () => 'SELECT * FROM messages',
 
-    insertNewMessage : (text,login,image) => `INSERT INTO messages(text, author) 
-                                              VALUES ('${text}', '{"login" : "${login}", "image" : "${image}" }')
+    insertNewMessage : (text,login,image) => `INSERT INTO messages(text, login, image) 
+                                              VALUES ('${text}', '${login}', '${image}')
                                               RETURNING *;`
 }

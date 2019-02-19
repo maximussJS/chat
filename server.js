@@ -12,7 +12,6 @@ server.on('request', require('./app'))
 ws.on('open', () => console.log(`Web Socket Server started on PORT : ${process.env.PORT}`))
   .on('connection', socket => {
       socket.on('message', async data => {
-          console.log(data)
           let msg = JSON.parse(data)
           switch (msg.type) {
               case 'message':
@@ -25,7 +24,11 @@ ws.on('open', () => console.log(`Web Socket Server started on PORT : ${process.e
                   await set(msg.login, false)
                   break
               case 'all':
-                  const length = await getOnline()
+                  const online = await getOnline()
+                  ws.clients.forEach(cli => cli.readyState === OPEN && cli.send(JSON.stringify({
+                      type : 'all',
+                      data : online.length
+                  })))
                   break
               default:
                   break

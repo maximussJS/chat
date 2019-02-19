@@ -25,9 +25,8 @@ router.post('/', authorize, async (req,res) => {
         const {body} = req
         if(!body.text) return res.status(400).json(failureResponse('Text param is required'))
         if(body.text.trim().length === 0) return res.status(400).json(failureResponse('Invalid text'))
-        if(!body.author) return res.status(400).json(failureResponse('Author param is required'))
-        const {login} = body.author
-        if(!login) return res.status(400).json(failureResponse('Login param is required'))
+        if(!body.login) return res.status(400).json(failureResponse('Login param is required'))
+        const {login,text} = body
         if(req.local.user.login !== login) return res.status(401).json('Not your login')
         const {
             rows : [user]
@@ -35,7 +34,7 @@ router.post('/', authorize, async (req,res) => {
         if(!user) return res.status(401).json(`No such user with login : ${login}`)
         const {
             rows : [newMessage]
-        } = await query(insertNewMessage(body.text,login,user.image))
+        } = await query(insertNewMessage(text,login,user.image))
         if(!newMessage) {
             console.error('Postgres Insert New Message Error')
             return res.status(500).json('Server Error')

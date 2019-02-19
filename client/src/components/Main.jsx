@@ -11,11 +11,15 @@ const Main = ({
     classes,
     items,
     error,
+    online,
     disabled,
     onInputChange,
     onClick
 }) =>
     <div>
+        <h2>
+            Online : {online}
+        </h2>
         <Chat items={items}/>
         <Input label={'Text message'}
                onChange={onInputChange}
@@ -37,6 +41,7 @@ Main.propTypes = {
     classes : propTypes.object.isRequired,
     items : propTypes.arrayOf(object).isRequired,
     error : propTypes.string.isRequired,
+    online : propTypes.number.isRequired,
     disabled : propTypes.bool.isRequired,
     onClick : propTypes.func.isRequired,
     onInputChange : propTypes.func.isRequired,

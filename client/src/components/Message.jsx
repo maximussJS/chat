@@ -16,8 +16,8 @@ const Message = ({
     <GridListTile className={inline}>
         <ListItem alignItems="flex-start">
             <ListItemAvatar>
-                <Avatar alt={msg.author.login}
-                        src={msg.author.image}/>
+                <Avatar alt={msg.login}
+                        src={msg.image}/>
             </ListItemAvatar>
             <ListItemText primary={msg.text}
                           secondary={
@@ -25,7 +25,7 @@ const Message = ({
                                   <Typography component="span"
                                               className={inline}
                                               color="textPrimary">
-                                      {msg.author.login}
+                                      {msg.login}
                                   </Typography>
                               </Fragment>}/>
         </ListItem>
