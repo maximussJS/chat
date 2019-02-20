@@ -9,11 +9,17 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Content from '../components/RegisterContent'
 import style from '../theme/Register'
+import RegisterForm from "../containers/Register";
 
 
 const Register = ({
     classes,
     error,
+    name,
+    login,
+    password,
+    repeat,
+    image,
     fields,
     steps,
     loading,
@@ -44,6 +50,11 @@ const Register = ({
                             <Content step={index}
                                      error={error}
                                      fields={fields}
+                                     name={name}
+                                     login={login}
+                                     password={password}
+                                     repeat={repeat}
+                                     image={image}
                                      onNameChange={onNameChange}
                                      onLoginChange={onLoginChange}
                                      onImageChange={onImageChange}
@@ -80,6 +91,11 @@ Register.propTypes = {
     fields : propTypes.array.isRequired,
     steps : propTypes.number.isRequired,
     loading : propTypes.bool.isRequired,
+    name : propTypes.string.isRequired,
+    login : propTypes.string.isRequired,
+    password : propTypes.string.isRequired,
+    repeat : propTypes.string.isRequired,
+    image : propTypes.object.isRequired,
     disabled : propTypes.bool.isRequired,
     activeStep : propTypes.number.isRequired,
     handleBack : propTypes.func.isRequired,

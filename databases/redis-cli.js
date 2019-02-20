@@ -1,4 +1,6 @@
 const Redis = require('ioredis')
+
+
 const cli = new Redis({
     port : process.env.REDIS_PORT,
     host : process.env.REDIS_HOST,
@@ -8,11 +10,11 @@ const cli = new Redis({
 
 cli.on('connect', () => console.log('Redis connected'))
    .on('error', err => {
-       console.error('REDIS ERROR', err)
+       console.error('Redis Error', err)
        process.exit(0)
-   }).on('close', () => {
-       console.log('Redis closed')
-   }).on('end', () => console.log('Redis end'))
+   })
+   .on('close', () => console.log('Redis closed'))
+   .on('end', () => console.log('Redis end'))
 
 
 module.exports = cli

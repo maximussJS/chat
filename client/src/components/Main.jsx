@@ -11,6 +11,7 @@ const Main = ({
     classes,
     items,
     error,
+    text,
     online,
     disabled,
     onInputChange,
@@ -24,6 +25,7 @@ const Main = ({
         <Input label={'Text message'}
                onChange={onInputChange}
                fullWidth={true}
+               value={text}
                error={error}
                helper={error}
                helperText={error}/>
@@ -40,6 +42,7 @@ const Main = ({
 Main.propTypes = {
     classes : propTypes.object.isRequired,
     items : propTypes.arrayOf(object).isRequired,
+    text : propTypes.string.isRequired,
     error : propTypes.string.isRequired,
     online : propTypes.number.isRequired,
     disabled : propTypes.bool.isRequired,

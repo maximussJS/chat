@@ -157,9 +157,14 @@ class Register extends Component {
     }
 
     render() {
-        const {activeStep,error,fields,disabled,loading} = this.state
+        const {activeStep,error,fields,disabled,loading,name,login,password,confirmPassword,image} = this.state
         return (
             <RegisterForm error={error}
+                          name={name}
+                          login={login}
+                          password={password}
+                          repeat={confirmPassword}
+                          image={image}
                           fields={fields}
                           loading={loading}
                           disabled={disabled}

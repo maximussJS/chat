@@ -107,10 +107,11 @@ class Main extends Component {
     }
 
     render() {
-        const {messages,error,disabled,online} = this.state
+        const {messages,error,disabled,online,text} = this.state
         return (
             <MainPage items={messages}
                       error={error}
+                      text={text}
                       online={online}
                       disabled={disabled}
                       onInputChange={this.onInputChange}

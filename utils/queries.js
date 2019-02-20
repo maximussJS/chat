@@ -38,5 +38,8 @@ module.exports = {
 
     getAllChats : () => 'SELECT * FROM chats',
 
-    getChatByName : name => `SELECT * FROM chats WHERE name = '${name}' ;`
+    getChatByName : name => `SELECT * FROM chats WHERE name = '${name}' ;`,
+
+    insertNewChat : (name, creator) => `INSERT INTO messages(name, creator)
+                                        VALUES ('${name}', '${creator}') RETURNING *;`
 }
