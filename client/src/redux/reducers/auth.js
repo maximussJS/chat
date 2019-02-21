@@ -4,7 +4,7 @@ import {AUTH_REQUEST, AUTH_SUCCESS, AUTH_FAILURE, LOGOUT} from '../actionTypes/a
 const initialState = {
     fetching: false,
     token: '',
-    error: null,
+    error: null
 }
 
 

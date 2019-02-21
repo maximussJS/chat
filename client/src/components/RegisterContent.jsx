@@ -69,7 +69,7 @@ const RegisterContent = ({
                     <Input type={'file'}
                            onChange={onImageChange}
                            label={'Choose image'}
-                           value={image}
+                           value={image.filename}
                            error={error && fields[0] === 'image'}
                            helper={error && fields[0] === 'image'}
                            helperText={error}/>

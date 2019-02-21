@@ -72,7 +72,6 @@ class Main extends Component {
     }
 
     componentWillUnmount() {
-        console.log('close socket')
         this.socket.close()
     }
 

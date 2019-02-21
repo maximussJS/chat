@@ -7,8 +7,8 @@ import LoginForm from '../components/Login'
 
 
 const mapStateToProps = state => ({
-    loading: state.fetching,
-    error: state.error
+    loading: state.auth.fetching,
+    error: state.auth.error
 })
 
 

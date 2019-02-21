@@ -36,10 +36,20 @@ module.exports = {
                                               VALUES ('${text}', '${login}', '${image}')
                                               RETURNING *;`,
 
+    createChatTable : () => `CREATE TABLE IF NOT EXISTS chats(
+                             id SERIAL PRIMARY KEY,
+                             name VARCHAR(20) UNIQUE NOT NULL,
+                             creator VARCHAR(20) NOT NULL,
+                             messages INTEGER REFERENCES messages(id),
+                             created TIMESTAMP DEFAULT NOW());`,
+
     getAllChats : () => 'SELECT * FROM chats',
 
     getChatByName : name => `SELECT * FROM chats WHERE name = '${name}' ;`,
 
     insertNewChat : (name, creator) => `INSERT INTO messages(name, creator)
-                                        VALUES ('${name}', '${creator}') RETURNING *;`
+                                        VALUES ('${name}', '${creator}') RETURNING *;`,
+
+    insertMessageInChat : (id,chat) => `UPDATE chats SET messages = messages || ${id}
+                                        WHERE name = '${chat}';`
 }
