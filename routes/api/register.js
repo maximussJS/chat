@@ -3,7 +3,7 @@ const upload = require('../../utils/upload')
 const pool = require('../../databases/postgres')
 const {encryptPassword} = require('../../utils/security')
 const {getUserByLogin, insertNewUser} = require('../../utils/queries')
-const {successResponse, failureResponse} = require('../../utils/responses')
+const {successResponse, failureResponse,serverError} = require('../../utils/responses')
 
 
 router.post('/', async (req,res) => {
@@ -43,7 +43,7 @@ router.post('/', async (req,res) => {
     }
     catch (e) {
         console.error(`Registration Error : ${e}`)
-        return res.status(500).json(failureResponse('Internal Server Error'))
+        return res.status(500).json(serverError())
     }
 })
 

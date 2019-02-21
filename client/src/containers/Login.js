@@ -72,7 +72,8 @@ class Login extends Component {
                 if (response.success) {
                     authenticate(response.token)
                     this.props.history.push('/')
-                } else this.setState({
+                }
+                else this.setState({
                     error: response.message,
                     loading: false,
                     fields: [...this.state.fields, 'password']

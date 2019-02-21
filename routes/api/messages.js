@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const pool = require('../../databases/postgres')
 const authorize = require('../../middlewares/authorized')
-const {successResponse, failureResponse} = require('../../utils/responses')
+const {successResponse, failureResponse, serverError} = require('../../utils/responses')
 const {getAllMessages, getUserByLogin, insertNewMessage} = require('../../utils/queries')
 
 
@@ -16,7 +16,7 @@ router
         }
         catch (e) {
             console.error(`GET MESSAGES ERROR : ${e}`)
-            return res.status(500).json(failureResponse('Internal Server Error'))
+            return res.status(500).json(serverError())
         }
     })
     .post('/', authorize, async (req,res) => {
@@ -44,7 +44,7 @@ router
         }
         catch (e) {
             console.error(`POST MESSAGE ERROR : ${e}`)
-            return res.status(500).json(failureResponse('Internal Server Error'))
+            return res.status(500).json(serverError())
         }
     })
 

@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const pool = require('../../databases/postgres')
 const authorized = require('../../middlewares/authorized')
-const {successResponse, failureResponse} = require('../../utils/responses')
+const {successResponse, failureResponse, serverError} = require('../../utils/responses')
 const {getAllUsers, getUserByLogin, deleteUserByLogin} = require('../../utils/queries')
 
 
@@ -20,7 +20,7 @@ router
         }
         catch (e) {
             console.error(`GET USER ERROR : ${e}`)
-            return res.status(500).json(failureResponse('Internal Server Error'))
+            return res.status(500).json(serverError())
         }
     })
     .get('/', authorized, async (req,res) => {
@@ -31,7 +31,7 @@ router
         }
         catch (e) {
             console.error(`GET USERS ERROR : ${e}`)
-            return res.status(500).json(failureResponse('Internal Server Error'))
+            return res.status(500).json(serverError())
         }
     })
     .delete('/', authorized, async (req,res) => {
@@ -47,7 +47,7 @@ router
         }
         catch (e) {
             console.error(`DELETE USER ERROR : ${e}`)
-            return res.status(500).json(failureResponse('Internal Server Error'))
+            return res.status(500).json(serverError())
         }
     })
 

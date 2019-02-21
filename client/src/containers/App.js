@@ -19,7 +19,7 @@ export default class App extends Component {
                         <Route exact component={Main} path='/'/>
                         <Route exact component={Login} path='/login'/>
                         <Route exact component={Register} path='/register'/>
-                        <Route exact component={Error} path='/error'/>
+                        <Route exact component={Error}/>
                     </Switch>
                 </Layout>
             </MuiThemeProvider>

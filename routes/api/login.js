@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const pool = require('../../databases/postgres')
 const {encryptPassword, generateToken} = require('../../utils/security')
-const {successResponse, failureResponse} = require('../../utils/responses')
+const {successResponse, failureResponse, serverError} = require('../../utils/responses')
 const {getUserByLogin, getUserByLoginAndPassword} = require('../../utils/queries')
 
 
@@ -18,7 +18,7 @@ router
         }
         catch (e) {
             console.error(`Is Login Unique Error ${e}`)
-            return res.status(500).json(failureResponse('Internal Server Error'))
+            return res.status(500).json(serverError())
         }
     })
     .post('/', async (req,res) => {
@@ -42,7 +42,7 @@ router
         }
         catch (e) {
             console.error(`Login Error : ${e}`)
-            return res.status(500).json(failureResponse('Internal Server Error'))
+            return res.status(500).json(serverError())
         }
     })
 
