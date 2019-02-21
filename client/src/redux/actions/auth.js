@@ -1,5 +1,5 @@
-import {authenticate} from '../../utils/auth'
 import {login as getToken} from '../../utils/requests'
+import {authenticate, deauthenticate} from '../../utils/auth'
 import {AUTH_REQUEST, AUTH_SUCCESS, AUTH_FAILURE, LOGOUT} from '../actionTypes/auth'
 
 
@@ -23,6 +23,12 @@ const AuthFailure = message => ({
 const logout = () => ({
     type: LOGOUT,
 })
+
+
+export const Logout = dispatch => {
+    deauthenticate()
+    dispatch(logout())
+}
 
 
 export const Login = (login, password) => dispatch => {

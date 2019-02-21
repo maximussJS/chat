@@ -24,6 +24,7 @@ router
     .post('/', async (req,res) => {
         try {
             const {body} = req
+            console.log(body)
             if(!body.login) return res.status(400).json(failureResponse('Login is required'))
             if(!body.password) return res.status(400).json(failureResponse('Password is required'))
 
