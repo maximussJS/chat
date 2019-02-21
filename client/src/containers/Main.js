@@ -41,11 +41,13 @@ class Main extends Component {
                     break
             }
         }
-        this.socket.onclose = () => {
+        this.socket.onclose = e => {
+            e.preventDefault()
             this.socket.send(JSON.stringify({
                 type : 'offline',
                 login : this.state.user.login
             }))
+            this.socket.close()
         }
     }
 
@@ -56,11 +58,9 @@ class Main extends Component {
             }, async () => {
                 try {
                     const response = await getMessages()
-                    if(response.success) {
-                        this.setState({
-                            messages : response.data
-                        })
-                    }
+                    if(response.success) this.setState({
+                        messages : response.data
+                    })
                     else this.props.history.push('/error')
                 }
                 catch (e) {
@@ -69,10 +69,6 @@ class Main extends Component {
             })
         }
         else this.props.history.push('/login')
-    }
-
-    componentWillUnmount() {
-        this.socket.close()
     }
 
     onInputChange = e => {

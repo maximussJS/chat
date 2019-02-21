@@ -1,5 +1,5 @@
 import {login as getToken} from '../../utils/requests'
-import {authenticate, deauthenticate} from '../../utils/auth'
+import {authenticate} from '../../utils/auth'
 import {AUTH_REQUEST, AUTH_SUCCESS, AUTH_FAILURE, LOGOUT} from '../actionTypes/auth'
 
 
@@ -20,29 +20,24 @@ const AuthFailure = message => ({
 })
 
 
-const logout = () => ({
-    type: LOGOUT,
+export const Logout = () => ({
+    type: LOGOUT
 })
 
-
-export const Logout = dispatch => {
-    deauthenticate()
-    dispatch(logout())
-}
-
-
-export const Login = (login, password) => dispatch => {
-        dispatch(AuthRequest())
-        getToken({
-            login,
-            password
-        })
-        .then(response => {
-            if(response.success) {
-                dispatch(AuthSuccess(response.token))
-                authenticate(response.token)
-            }
-            else dispatch(AuthFailure(response.message))
-        })
-        .catch(err => window.location = '/error')
+export const Login = (login, password) => async dispatch => {
+     try {
+         dispatch(AuthRequest())
+         const response = await getToken({
+             login,
+             password
+         })
+         if(response.success) {
+             authenticate(response.token)
+             dispatch(AuthSuccess(response.token))
+         }
+         else dispatch(AuthFailure(response.message))
+     }
+     catch (e) {
+         window.location = '/error'
+     }
 }

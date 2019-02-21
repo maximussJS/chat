@@ -73,18 +73,17 @@ class Login extends Component {
 
     render() {
         const {error, fields, disabled, login, password} = this.state
-        const {loading} = this.props
+        const {loading, onSubmit, history} = this.props
         return (
             <LoginForm  error={error}
                         fields={fields}
                         disabled={disabled}
                         loading={loading}
                         onSubmit={() => {
-                            this.props.onSubmit(login, password)
-                            this.props.error
-                                ? this.props.history.push('/error')
-                                : this.props.history.push('/')
-                            }
+                            onSubmit(login, password)
+                                .then(res => history.push('/'))
+                                .catch(err => history.push('/error'))
+                        }
                         }
                         onLoginChange={this.onLoginChange}
                         onPasswordChange={this.onPasswordChange}
@@ -94,4 +93,4 @@ class Login extends Component {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login))

@@ -13,7 +13,7 @@ const style = theme => ({
         height : '80px',
     },
     gridList: {
-        width: 225,
+        width: 300,
         height: 300,
         transform: 'translateZ(0)',
     },

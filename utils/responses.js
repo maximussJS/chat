@@ -1,4 +1,4 @@
-const successResponse = (message, token = null, data = null) =>
+const success = (message, token = null, data = null) =>
     token === null
         ? (
             data === null
@@ -19,14 +19,14 @@ const successResponse = (message, token = null, data = null) =>
         })
 
 
-const failureResponse = message => ({
+const failure = message => ({
     success: false,
     message: message
 })
 
 
 module.exports = {
-    successResponse,
-    failureResponse,
-    serverError: () => failureResponse('Internal Server Error')
+    success,
+    failure,
+    serverError: () => failure('Internal Server Error')
 }

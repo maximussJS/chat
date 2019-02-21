@@ -1,6 +1,6 @@
 const {isJWT} = require('validator')
 const {verifyToken} = require('../utils/security')
-const {failureResponse} = require('../utils/responses')
+const {failure} = require('../utils/responses')
 
 
 const getTokenFromHeaders = headers => new Promise( (resolve,reject) => {
@@ -19,6 +19,6 @@ module.exports = async (req,res,next) => {
     }
     catch (e) {
         console.error(`Authorization header Error : ${e}`)
-        return res.status(401).json(failureResponse('Unauthorized'))
+        return res.status(401).json(failure('Unauthorized'))
     }
 }

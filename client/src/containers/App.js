@@ -1,13 +1,13 @@
 import React,{Component} from 'react'
 import {Route,Switch} from 'react-router-dom'
-import '../css/App.css'
 import theme from '../theme/MuiTheme'
 import Main from '../containers/Main'
 import Login from '../containers/Login'
 import Register from '../containers/Register'
-import Layout from '../components/Layout'
+import Layout from './Layout'
 import Error from '../components/Error'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import '../css/App.css'
 
 
 export default class App extends Component {
