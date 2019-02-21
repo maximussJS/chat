@@ -9,7 +9,6 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Content from '../components/RegisterContent'
 import style from '../theme/Register'
-import RegisterForm from "../containers/Register";
 
 
 const Register = ({

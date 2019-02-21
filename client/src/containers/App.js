@@ -6,6 +6,7 @@ import Main from '../containers/Main'
 import Login from '../containers/Login'
 import Register from '../containers/Register'
 import Layout from '../components/Layout'
+import Error from '../components/Error'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 
 
@@ -18,6 +19,7 @@ export default class App extends Component {
                         <Route exact component={Main} path='/'/>
                         <Route exact component={Login} path='/login'/>
                         <Route exact component={Register} path='/register'/>
+                        <Route exact component={Error} path='/error'/>
                     </Switch>
                 </Layout>
             </MuiThemeProvider>

@@ -78,8 +78,12 @@ const RegisterContent = ({
         default:
             return(
                 <div>
-                    <h4>Press Finish to end Registration</h4>
-                    <h4>Or Press BACK if you did not agree with your settings</h4>
+                    <h4>
+                        Press Finish to end Registration
+                    </h4>
+                    <h4>
+                        Or Press BACK if you did not agree with your settings
+                    </h4>
                 </div>
             )
     }
