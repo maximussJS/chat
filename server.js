@@ -5,7 +5,7 @@ require('dotenv').load({
 const {Server, OPEN} = require('ws')
 const server = require('http').createServer()
 const pool = require('./databases/postgres')
-const cli = require('./databases/redis-cli')
+// const cli = require('./databases/redis-cli')
 
 
 const ws = new Server({
